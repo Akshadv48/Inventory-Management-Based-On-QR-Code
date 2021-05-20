@@ -135,6 +135,7 @@
 		      <th scope="col">Item Id</th>
 		      <th scope="col">Installation Date</th>
 		      <th scope="col">Installation Time</th>
+          <th scope="col">Maintainance History</th>
 		      
 		    </tr>
 		  </thead>
@@ -148,6 +149,9 @@
 		      <td>{{ data.1 }}</td>
 		      <td>{{ data.2|date }}</td>
 		      <td>{{ data.2|time }}</td>
+          <td>
+            <a class="btn btn-primary" href="{% url 'maintainance_record_item' owner_id data.1 %}">click here</a>
+          </td>
 
 		      
 		      

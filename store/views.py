@@ -12,6 +12,11 @@ from .models import *
 
 #
 # Create your views here.
+def getOwnerInfo(o_id):
+	owner_info = list(Owner.objects.filter(owner_id=str(o_id)).values())
+	if len(owner_info) == 0:
+		return "notfound"
+	return owner_info
 
 def get_installation_Info(o_id):
 	#try:
@@ -28,6 +33,30 @@ def get_mainatainance_date(o_id):
 		return (str(Maintainance_info[0][0])[:10] if type(Maintainance_info) == list else Maintainance_info)
 	except IndexError:
 		return "No Maintainace Done Yet"
+
+
+
+def get_maintainance_info_item(request,o_id,i_id):
+	try:
+
+		Main_hist = list(Maintainance.objects.filter(owner_id=str(o_id)).filter(item_id=str(i_id)).values_list('owner_id','maintain_item','item_id','maintain_date','Remarks').order_by('-maintain_date'))
+
+		owner_info = getOwnerInfo(o_id)
+
+		details_dict ={}
+
+		for i in owner_info[0]:
+			details_dict[i] = owner_info[0][i]
+
+		details_dict['maint_his'] = Main_hist
+		#return JsonResponse(details_dict,safe=False)
+
+
+		return render(request,"maininfo.html",details_dict);
+	except IndexError:
+		return HttpResponse('No Maintainance Records for \'user-id\' : \'%d\''%(o_id))
+
+
 
 
 def GetDetails(request,o_id):

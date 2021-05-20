@@ -11,6 +11,9 @@ urlpatterns = [
     path('info/<int:o_id>/', views.GetDetails2, name='details2'),
 
     path('maintainance/<int:o_id>/', views.Maintainance_rec, name='maintainance_record'),
+
+    path('maintainance_item/<int:o_id>/<int:i_id>', views.get_maintainance_info_item, name='maintainance_record_item'),
+    
     # ex: /polls/5/vote/
     path('add_o/<int:o_id>/<str:o_namef>/<str:o_namel>/', views.Add_owner, name='Add_Info_owner'),
     
