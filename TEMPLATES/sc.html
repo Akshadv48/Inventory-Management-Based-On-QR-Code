@@ -1,9 +1,12 @@
-
+{% load static %}
 <!doctype html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0">
     <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'scanner/sc.css'%}">
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -12,88 +15,55 @@
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-	<style type="text/css">
-		#overlay{
-			position: fixed; /* Sit on top of the page content */
-  display: block; /* Hidden by default */
-  /* Full width (cover the whole page) */
-   /* Full height (cover the whole page) */
 
-  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-  z-index: 1000000000000000000; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
-		}
-		.qrbox{
-			margin-top: 5%;
-
-			
-			width: 100%;		
-			
-			
-		}
-		.qrdiv{
-			height: 10px;
-			width: 10px;
-		}
-		#hr1,#hr2{
-			margin-left: 0;
-			height:2px;
-			width: 25%;
-			background-color: black;
-		}
-		#hr2{
-			margin-right: 0;
-			height:2px;
-			width: 25%;
-			background-color: black;
-		}
-		#textinp{
-			width: 50%;
-			display: inline-block;
-			margin:0;
-			padding-right: 1%; 
-		}
-	</style>
 
 </head>
 
 	<body>
+		
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 		<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 		<center>
 		<h1 >Welcome to E-Inventory</h1>
-		<p id ="error" style="color: red;"></p>
+		<h5>Scan a QR-Code or Type your scan-Id in Box to get details</h5>
+		<p id ="error" style="color: red;">{{error}}</p>
 		</center>
 		
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-3"></div>
-				<div class="col-6">
+				<div class="col-sm-4 col-xs-4"></div>
+				<div class="col-sm-4 col-xs-3">
 					
-					<video id="preview" class="qrbox"></video>
+					<video id="preview"  style="margin:0;width:100%;"></video>
 					
 					
 
 					<center>
 					<p><h5>------- OR ------</h5></p>
 					</center>
-					<p>
+					<!-- <p>
 						<input id ="textinp" type="text" name="">
 						<button id="btn" class="btn btn-success" onclick="getdetails();">Details</button>
-					</p>
+					</p> -->
+					<form method="post">
+						{% csrf_token %}
+					    <input id="owner_id" type="text" name="owner_id" placeholder="Your Owner Id">
+					    <input id="submit" class="btn btn-success" type="submit" value="Details">
+					</form>
 					
 					<!---a id='url1'>{{details_url}}</a--->
 					
 					
 				</div>
-				<div class="col-3"></div>	
+				<div class="col-sm-4 col-xs-5"></div>	
 			</div>
 		</div>
+		<script type="text/javascript" src="{% static 'scanner/sc.js'%}" ></script>
 					
 		<script type="text/javascript">
 			
 
-			async function getapi(url,content) {
+			/*async function getapi(url,content) {
 
 			    // Storing response
 			    const response = await fetch(url);
@@ -118,43 +88,10 @@
 				console.log(url);
 				content = txt.value;
 				getapi(url,content);
-			}
+			}*/
 
-			var scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5, mirror: false });
-			scanner.addListener('scan',function(content){
-				
-				//window.location.href=content;
-				var x = document.getElementById("error")
-				var txt = document.getElementById("textinp")
-				txt.value = content
-
-				x.innerHTML = "Success loading details";
-				url = window.location.href + "store/fullinfo/" + content
-
-				getapi(url,content)
-			});
-			Instascan.Camera.getCameras().then(function (cameras){
-				if(cameras.length>0){
-					if(cameras.length >= 2){
-						scanner.start(cameras[1]);
-
-					}
-					else{
-						scanner.start(cameras[0]);
-					}
-					
-					
-				}
-				else{
-					console.error('No cameras found.');
-					var x = document.getElementById("error")
-					x.innerHTML = "Cameras Not Found can't start scanner";
-				}
-			}).catch(function(e){
-				console.error(e);
-				var x = document.getElementById("error")
-					x.innerHTML = "Cameras Not Found can't start scanner";
-			});
+			
 		</script>
+
 	</body>
 </html>

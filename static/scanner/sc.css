@@ -1,0 +1,40 @@
+#overlay{
+	position: fixed; /* Sit on top of the page content */
+	display: block; /* Hidden by default */
+	/* Full width (cover the whole page) */
+	/* Full height (cover the whole page) */
+
+	background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+	z-index: 1000000000000000000; /* Specify a stack order in case you're using a different order for other elements */
+	cursor: pointer; /* Add a pointer on hover */
+	}
+.qrbox{
+	margin-top: 5%;
+
+
+	width: 100%;		
+
+
+	}
+.qrdiv{
+	height: 10px;
+	width: 10px;
+	}
+#hr1,#hr2{
+	margin-left: 0;
+	height:2px;
+	width: 25%;
+	background-color: black;
+	}
+#hr2{
+	margin-right: 0;
+	height:2px;
+	width: 25%;
+	background-color: black;
+	}
+#textinp{
+	width: 50%;
+	display: inline-block;
+	margin:0;
+	padding-right: 1%; 
+	}

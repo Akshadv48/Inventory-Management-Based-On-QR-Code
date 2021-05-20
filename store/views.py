@@ -12,10 +12,6 @@ from .models import *
 
 #
 # Create your views here.
-def index(request):
-	return render(request,"sc.html",{"title":"Home"});
-
-
 
 def get_installation_Info(o_id):
 	#try:
@@ -79,6 +75,30 @@ def GetDetails2(request,o_id):
 		#return JsonResponse({"error":"notfound"},safe=False)
 		return HttpResponse("<center><H1> The User with \'user-id\' : \' %d \' Is Not Registered!</H1><br>SomeThing Fishy is Going On!...</center>"%(o_id))
 
+def getOwnerInfo(o_id):
+	owner_info = list(Owner.objects.filter(owner_id=str(o_id)).values())
+	if len(owner_info) == 0:
+		return "notfound"
+	return owner_info
+
+
+
+def index(request):
+	if request.method == 'POST':
+		x= request.POST['owner_id']
+		if len(x)<=0:
+			return render(request,"sc.html",{"title":"Home","error":"ID Must Not be Empty"});
+			
+		else:
+			ans = getOwnerInfo(x)
+			if ans  == "notfound":
+				return render(request,"sc.html",{"title":"Home","error":"invalid ID Try again"});
+			else:
+				#print(ans)
+				return GetDetails2(request,x);
+				#return render(request,"sc.html",{"title":"Home","owner_id":ans[0][1]});
+
+	return render(request,"sc.html",{"title":"Home"});
 
 
 def Maintainance_rec(request,o_id):
